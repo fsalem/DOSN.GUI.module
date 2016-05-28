@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+  
+    <http auto-config="true">
+        <intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/css/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/images/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/fonts/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/js/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		 <intercept-url pattern="/gui/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		
+        <intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
+		<intercept-url pattern="/**" access="ROLE_USER"/>
+     
+        
+        <form-login 
+        	login-page="/login.jsp" 
+        	authentication-failure-url="/login.jsp?login_error=1" 
+        	default-target-url="/userpage.html" 
+        	always-use-default-target="true"/>
+        	
+        <logout logout-success-url="/login.jsp" /> 
+  </http>
+
+  <authentication-manager>
+    <authentication-provider user-service-ref="dosnAuthenticationManager">
+        <!--    <password-encoder hash="md5"/>-->
+    </authentication-provider>
+  </authentication-manager>
+
+   <!-- Automatically receives AuthenticationEvent messages -->
+   <beans:bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+
+
+</beans:beans>
